@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub - Select Your Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #333;
+        }
+        header {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: white;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .game-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        .game-icon {
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            color: white;
+        }
+        .memory-card .game-icon {
+            background-color: #FF6B6B;
+        }
+        .rps-card .game-icon {
+            background-color: #4ECDC4;
+        }
+        .words-card .game-icon {
+            background-color: #FFD166;
+        }
+        .tictactoe-card .game-icon {
+            background-color: #6A0572;
+        }
+        .snake-card .game-icon {
+            background-color: #2E8B57;
+        }
+        .whack-card .game-icon {
+            background-color: #8B4513;
+        }
+        .number-card .game-icon {
+            background-color: #4361EE;
+        }
+        .pong-card .game-icon {
+            background-color: #3A86FF;
+        }
+        .game-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .game-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .game-info p {
+            color: #666;
+            flex: 1;
+        }
+        .play-button {
+            background-color: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        .play-button:hover {
+            background-color: #5a67d8;
+            text-decoration: none;
+            color: white;
+        }
+        footer {
+            padding: 1rem;
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .games-container {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Game Hub</h1>
+        <p>Select a game to start playing</p>
+    </header>
+    <main>
+        <div class="games-container">
+            <div class="game-card memory-card">
+                <div class="game-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Memory Card Game</h3>
+                    <p>Test your memory by matching pairs of cards. Flip two cards at a time and try to remember where each card is located.</p>
+                    <a href="mcg.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card rps-card">
+                <div class="game-icon">
+                    <i class="fas fa-hand-rock"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Rock Paper Scissors</h3>
+                    <p>The classic game of Rock, Paper, Scissors. Choose your move and see if you can beat the computer!</p>
+                    <a href="rps.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card words-card">
+                <div class="game-icon">
+                    <i class="fas fa-spell-check"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Words Guessing Game</h3>
+                    <p>Challenge your vocabulary with this word game. Form words from given letters and score points!</p>
+                    <a href="wgg.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card tictactoe-card">
+                <div class="game-icon">
+                    <i class="fas fa-times"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Tic Tac Toe</h3>
+                    <p>The classic strategy game. Get three X's or O's in a row to win. Play against the computer or a friend.</p>
+                    <a href="ttt.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card snake-card">
+                <div class="game-icon">
+                    <i class="fas fa-dragon"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Snake Game</h3>
+                    <p>Control the snake to eat food and grow longer. Avoid hitting walls or yourself!</p>
+                    <a href="sg.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <!-- New games added below -->
+            <div class="game-card whack-card">
+                <div class="game-icon">
+                    <i class="fas fa-hammer"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Whack-a-Mole</h3>
+                    <p>Test your reflexes by whacking moles as they pop up from their holes. Score as many points as you can before time runs out!</p>
+                    <a href="wam.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card number-card">
+                <div class="game-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Number Guessing</h3>
+                    <p>Try to guess the secret number within the given attempts. The game will tell you if your guess is higher or lower.</p>
+                    <a href="nbg.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+            <div class="game-card pong-card">
+                <div class="game-icon">
+                    <i class="fas fa-table-tennis-paddle-ball"></i>
+                </div>
+                <div class="game-info">
+                    <h3>Pong</h3>
+                    <p>Classic arcade game! Control your paddle to hit the ball and score points against the AI opponent.</p>
+                    <a href="pong.html" class="play-button">Play Now</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p>&copy; 2025 Game Hub. All rights reserved.</p>
+    </footer>
+</body>
+</html>

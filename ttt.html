@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        h1 {
+            color: #2575fc;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .status {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 10px;
+            margin-bottom: 30px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 10px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .cell:hover {
+            background: #e0e0e0;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .cell:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .cell.x {
+            color: #2575fc;
+        }
+        .cell.o {
+            color: #6a11cb;
+        }
+        .reset-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+        .reset-btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .winning-cell {
+            background: #c8e6c9 !important;
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from {
+                transform: scale(1);
+            }
+            to {
+                transform: scale(1.05);
+            }
+        }
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        .score-box {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .score-box span {
+            font-weight: bold;
+            color: #2575fc;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Tic-Tac-Toe</h1>
+        
+        <div class="score-board">
+            <div class="score-box">Player X: <span id="scoreX">0</span></div>
+            <div class="score-box">Player O: <span id="scoreO">0</span></div>
+            <div class="score-box">Draws: <span id="scoreDraw">0</span></div>
+        </div>
+        
+        <div class="status" id="status">Player X's turn</div>
+        
+        <div class="board" id="board">
+            <button class="cell" data-index="0"></button>
+            <button class="cell" data-index="1"></button>
+            <button class="cell" data-index="2"></button>
+            <button class="cell" data-index="3"></button>
+            <button class="cell" data-index="4"></button>
+            <button class="cell" data-index="5"></button>
+            <button class="cell" data-index="6"></button>
+            <button class="cell" data-index="7"></button>
+            <button class="cell" data-index="8"></button>
+        </div>
+        
+        <button class="reset-btn" id="resetBtn">Reset Game</button>
+    </div>
+    <script>
+        // Game state variables
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+        
+        // Score tracking
+        let scores = {
+            X: 0,
+            O: 0,
+            draw: 0
+        };
+        
+        // DOM elements
+        const statusDisplay = document.getElementById('status');
+        const cells = document.querySelectorAll('.cell');
+        const resetButton = document.getElementById('resetBtn');
+        const scoreXDisplay = document.getElementById('scoreX');
+        const scoreODisplay = document.getElementById('scoreO');
+        const scoreDrawDisplay = document.getElementById('scoreDraw');
+        
+        // Winning conditions
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+        
+        // Initialize game
+        function initGame() {
+            cells.forEach((cell, index) => {
+                cell.addEventListener('click', () => handleCellClick(index));
+            });
+            resetButton.addEventListener('click', resetGame);
+            updateScoreDisplay();
+        }
+        
+        // Handle cell click
+        function handleCellClick(index) {
+            // If cell is already filled or game is not active, do nothing
+            if (gameBoard[index] !== '' || !gameActive) {
+                return;
+            }
+            
+            // Update game board and UI
+            gameBoard[index] = currentPlayer;
+            cells[index].textContent = currentPlayer;
+            cells[index].classList.add(currentPlayer.toLowerCase());
+            
+            // Check for win or draw
+            checkResult();
+        }
+        
+        // Check game result
+        function checkResult() {
+            let roundWon = false;
+            let winningCombination = [];
+            
+            for (let i = 0; i < winningConditions.length; i++) {
+                const [a, b, c] = winningConditions[i];
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    roundWon = true;
+                    winningCombination = [a, b, c];
+                    break;
+                }
+            }
+            
+            if (roundWon) {
+                statusDisplay.textContent = `Player ${currentPlayer} wins!`;
+                gameActive = false;
+                highlightWinningCells(winningCombination);
+                scores[currentPlayer]++;
+                updateScoreDisplay();
+                return;
+            }
+            
+            // Check for draw
+            if (!gameBoard.includes('')) {
+                statusDisplay.textContent = 'Game ended in a draw!';
+                gameActive = false;
+                scores.draw++;
+                updateScoreDisplay();
+                return;
+            }
+            
+            // Switch player
+            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+        }
+        
+        // Highlight winning cells
+        function highlightWinningCells(combination) {
+            combination.forEach(index => {
+                cells[index].classList.add('winning-cell');
+            });
+        }
+        
+        // Reset game
+        function resetGame() {
+            currentPlayer = 'X';
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            gameActive = true;
+            statusDisplay.textContent = `Player ${currentPlayer}'s turn`;
+            
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('x', 'o', 'winning-cell');
+            });
+        }
+        
+        // Update score display
+        function updateScoreDisplay() {
+            scoreXDisplay.textContent = scores.X;
+            scoreODisplay.textContent = scores.O;
+            scoreDrawDisplay.textContent = scores.draw;
+        }
+        
+        // Start the game
+        initGame();
+    </script>
+</body>
+</html>
